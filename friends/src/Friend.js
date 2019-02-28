@@ -1,11 +1,11 @@
 import React from 'react'
 
-const Friend = props => {
+const Friend = ({ name, age, email }) => {
   return (
     <div>
-      <p>Name: {props.name}</p>
-      <p>Age: {props.age}</p>
-      <p>Email:{props.email}</p>
+      <p>Name: {name}</p>
+      <p>Age: {age}</p>
+      <p>Email:{email}</p>
     </div>
   )
 }

@@ -1,43 +1,35 @@
 import React from 'react'
-import styled from 'styled-components'
-import { Link } from 'react-router-dom'
 
-const FormContainer = styled.form`
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  height: 400px;
-  justify-content: space-evenly;
-
-  input[type='submit'] {
-    width: 100px;
-  }
-`
-
-const AddFriend = props => {
+const AddFriend = ({ name, age, email, handleChange, handleSubmit }) => {
   return (
-    <FormContainer>
-      <label>
+    <div className="container">
+      <form onSubmit={handleSubmit}>
         Name:
-        <input name="name" type="text" value={props.name} onChange={props.handleChange} />
-      </label>
-      <label>
+        <input
+          name="name"
+          placeholder="enter text"
+          type="Name"
+          value={name}
+          onChange={handleChange}
+        />
         Age:
-        <input name="age" type="text" value={props.age} onChange={props.handleChange} />
-      </label>
-      <label>
-        Email:
+        <input
+          name="age"
+          placeholder="enter text"
+          type="Age"
+          value={age}
+          onChange={handleChange}
+        />
         <input
           name="email"
-          type="text"
-          value={props.email}
-          onChange={props.handleChange}
+          placeholder="enter text"
+          type="Email"
+          value={email}
+          onChange={handleChange}
         />
-      </label>
-      <Link to="/">
-        <input type="submit" value="Submit" onClick={props.handleSubmit} />
-      </Link>
-    </FormContainer>
+        <input type="submit" value="submit" />
+      </form>
+    </div>
   )
 }
 

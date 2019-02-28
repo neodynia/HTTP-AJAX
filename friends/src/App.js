@@ -2,121 +2,90 @@ import React, { Component } from 'react'
 import FriendList from './FriendList'
 import axios from 'axios'
 import AddFriend from './AddFriend'
-import { Route } from 'react-router-dom'
-import UpdateFriend from './UpdateFriend'
 
 class App extends Component {
-  state = {
-    friends: [],
-    name: '',
-    age: '',
-    email: '',
+  constructor(props) {
+    super(props)
+    this.state = {
+      friends: [],
+      name: '',
+      age: '',
+      email: ''
+    }
   }
 
-  componentDidMount() {
-    axios
-      .get('http://localhost:5000/friends')
-      .then(response => this.setState({ friends: response.data }))
-      .catch(e => console.log(e))
+  async componentDidMount() {
+    const response = await axios.get('http://localhost:5000/friends')
+    return this.setState({ friends: response.data })
   }
 
   handleChange = e => {
-    const target = e.target
-    const value = target.name === 'age' ? parseInt(target.value) : target.value
-    const name = target.name
+    if (e.target.value === 'age') {
+      return parseInt(e.target.value)
+    }
     this.setState({
-      [name]: value,
+      [e.target.name]: e.target.value
     })
   }
 
-  handleSubmit = e => {
-    axios
-      .post('http://localhost:5000/friends', {
-        name: this.state.name,
-        age: this.state.age,
-        email: this.state.email,
-      })
-      .then(response =>
-        this.setState({
-          friends: response.data,
-          id: '',
-          name: '',
-          age: '',
-          email: '',
-        })
-      )
-      .catch(e => console.log('ERROR', e))
-  }
-
-  updateFriendForm = e => {
-    this.setState({
-      redirect: !this.state.redirect,
+  handleSubmit = async e => {
+    e.preventDefault()
+    const { name, age, email } = this.state
+    const response = await axios.post('http://localhost:5000/friends', {
+      name,
+      age,
+      email
+    })
+    return this.setState({
+      friends: response.data,
+      name: '',
+      age: '',
+      email: ''
     })
   }
-  updateFriend = e => {
-    axios
-      .put(`http://localhost:5000/friends/${e.target.id}`, {
-        name: this.state.name,
-        age: this.state.age,
-        email: this.state.email,
-      })
-      .then(response => this.setState({ friends: response.data }))
+
+  updateFriend = async e => {
+    const id = e.target.id
+    const { name, age, email } = this.state
+    const response = await axios.put(`http://localhost:5000/friends/${id}`, {
+      name,
+      age,
+      email
+    })
+
+    return this.setState({
+      friends: response.data,
+      name: '',
+      age: '',
+      email: ''
+    })
   }
 
-  deleteFriend = e => {
-    axios
-      .delete(`http://localhost:5000/friends/${e.target.id}`)
-      .then(response =>
-        console.log(
-          this.setState({ friends: response.data, name: '', age: '', email: '' })
-        )
-      )
-      .catch(e => console.log(e, 'ERROR'))
+  deleteFriend = async e => {
+    const id = e.target.id
+    const response = await axios.delete(`http://localhost:5000/friends/${id}`)
+    return this.setState({
+      friends: response.data
+    })
   }
 
   render() {
+    const { friends, name, age, email } = this.state
     return (
-      <div className="App">
-        <Route
-          exact
-          path="/"
-          render={props => (
-            <FriendList
-              {...props}
-              friends={this.state.friends}
-              deleteFriend={this.deleteFriend}
-              backToAdd={this.backToAdd}
-              updateFriend={this.updateFriend}
-            />
-          )}
-        />
-        <Route
-          exact
-          path="/addfriend"
-          render={props => (
-            <AddFriend
-              {...props}
-              handleChange={this.handleChange}
-              handleSubmit={this.handleSubmit}
-              name={this.state.name}
-              age={this.state.age}
-              email={this.state.email}
-            />
-          )}
+      <div className="full-container">
+        <FriendList
+          friends={friends}
+          deleteFriend={this.deleteFriend}
+          backToAdd={this.backToAdd}
+          updateFriend={this.updateFriend}
         />
 
-        <Route
-          path="/updatefriend"
-          render={props => (
-            <UpdateFriend
-              {...props}
-              handleChange={this.handleChange}
-              updateFriend={this.updateFriend}
-              name={this.state.name}
-              age={this.state.age}
-              email={this.state.email}
-            />
-          )}
+        <AddFriend
+          name={name}
+          age={age}
+          email={email}
+          handleChange={this.handleChange}
+          handleSubmit={this.handleSubmit}
         />
       </div>
     )
