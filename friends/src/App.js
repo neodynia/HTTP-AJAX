@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import './App.css'
 import FriendList from './FriendList'
 import axios from 'axios'
 import AddFriend from './AddFriend'
@@ -7,14 +6,11 @@ import { Route } from 'react-router-dom'
 import UpdateFriend from './UpdateFriend'
 
 class App extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      friends: [],
-      name: '',
-      age: '',
-      email: '',
-    }
+  state = {
+    friends: [],
+    name: '',
+    age: '',
+    email: '',
   }
 
   componentDidMount() {

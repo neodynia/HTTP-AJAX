@@ -1,6 +1,6 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const FormContainer = styled.form`
   display: flex;
@@ -12,7 +12,7 @@ const FormContainer = styled.form`
   input[type='submit'] {
     width: 100px;
   }
-`
+`;
 
 const UpdateFriend = props => {
   return (
@@ -39,7 +39,7 @@ const UpdateFriend = props => {
         <input type="submit" value="Submit" />
       </Link>
     </FormContainer>
-  )
-}
+  );
+};
 
-export default UpdateFriend
+export default UpdateFriend;
